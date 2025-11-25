@@ -1,28 +1,37 @@
 name: CD - deploy to VPS
-on:
-push:
-branches: [ 'espinoza' ]
 
+on:
+  push:
+    branches: [ 'espinoza' ]
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
-needs: build-and-push
-steps:
-- name: Deploy stack to VPS
-uses: appleboy/ssh-action@v0.1.7
-with:
-host: ${{ secrets.VPS_HOST }}
-username: ${{ secrets.VPS_USER }}
-key: ${{ secrets.VPS_SSH_KEY }}
-port: ${{ secrets.VPS_SSH_PORT }}
-script: |
-set -e
-echo "Pulling image..."
-docker pull ghcr.io/${{ github.repository_owner }}/espinoza:1.0.5
-echo "Updating docker stack..."
-cat > /tmp/docker-stack-esoinoza.yml <<'YAML'
-${{ toJson(needs.build-and-push.outputs) }}
-YAML
-# Si ya creaste un stack con este nombre, esto lo actualiza.
-docker stack deploy -c /tmp/docker-stack-espinoza.yml nunez_stack || docker stack deploy -c /tmp/docker-stack-nunez.yml nunez_stack
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+    - name: Deploy stack to VPS
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_SSH_PORT }}
+        script: |
+          set -e
+          echo "Pulling image..."
+          docker pull ghcr.io/${{ github.repository_owner }}/espinoza:1.0.5
+
+          echo "Updating docker stack..."
+          cat << 'EOF' > /tmp/docker-stack-espinoza.yml
+services:
+  app:
+    image: ghcr.io/${{ github.repository_owner }}/espinoza:1.0.5
+    ports:
+      - "8000:8000"
+    deploy:
+      replicas: 1
+EOF
+
+          echo "Deploying stack..."
+          docker stack deploy -c /tmp/docker-stack-espinoza.yml espinoza_stack
