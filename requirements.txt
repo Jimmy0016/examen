@@ -1,0 +1,5 @@
+Flask==2.3.2
+pytest==7.4.0
+requests==2.31.0
+# OpenAI es opcional; si quieres usarla, añade la librería
+openai==0.27.6

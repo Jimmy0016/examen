@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Micro-AI - espinoza</title>
+</head>
+<body>
+<h1>Micro-AI de Prueba — espinoza</h1>
+<p>Este microservicio responde usando un fallback local. Puedes configurar <code>OPENAI_API_KEY</code> para usar OpenAI.</p>
+
+
+<input id="prompt" placeholder="Escribe una pregunta" style="width:60%" />
+<button onclick="send()">Enviar</button>
+<pre id="out"></pre>
+
+
+<script>
+async function send(){
+const p = document.getElementById('prompt').value
+const r = await fetch('/api/reply', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:p})})
+const j = await r.json()
+document.getElementById('out').innerText = j.reply
+}
+</script>
+</body>
+</html>
