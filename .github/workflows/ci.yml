@@ -43,10 +43,15 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
 
-    - name: Build Docker image
-      run: |
-        docker build -t ghcr.io/jimmy0016/espinoza:1.0.5 .
-
-    - name: Push Docker image
-      run: |
-        docker push ghcr.io/jimmy0016/espinoza:1.0.5
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          ghcr.io/jimmy0016/espinoza:1.0.5
+          ghcr.io/jimmy0016/espinoza:latest
+        labels: |
+          org.opencontainers.image.source=https://github.com/Jimmy0016/examen
+          org.opencontainers.image.description=Flask AI App - Espinoza CI/CD
+          org.opencontainers.image.version=1.0.5
