@@ -44,9 +44,9 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Docker image
-  run: |
-    docker build -t ghcr.io/jimmy0016/espinoza:1.0.5 .
+      run: |
+        docker build -t ghcr.io/jimmy0016/espinoza:1.0.5 .
 
     - name: Push Docker image
-  run: |
-    docker push ghcr.io/jimmy0016/espinoza:1.0.5
+      run: |
+        docker push ghcr.io/jimmy0016/espinoza:1.0.5
