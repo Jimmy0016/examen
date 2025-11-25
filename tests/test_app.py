@@ -25,3 +25,13 @@ def test_api_reply_known():
     r = client.post('/api/reply', json={'prompt': '¿Qué es Docker?'})
     j = r.get_json()
     assert isinstance(j['reply'], str)
+
+
+def test_health_endpoint():
+    client = app.test_client()
+    r = client.get('/health')
+    assert r.status_code == 200
+    j = r.get_json()
+    assert j['status'] == 'healthy'
+    assert j['service'] == 'espinoza-ai'
+    assert j['version'] == '1.0.5'

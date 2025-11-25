@@ -1,21 +1,28 @@
-Crear repositorio en GitHub.
+# Proyecto CI/CD - Espinoza
 
-Crear rama espinoza y empujar todo.
+## Configuración del Proyecto
 
-Crear secrets en Settings → Secrets & variables → Actions:
+### 1. Repositorio GitHub
+- Crear repositorio en GitHub
+- Crear rama `espinoza` y empujar todo el código
+- La rama `espinoza` será la única rama de desarrollo
 
-CR_PAT (PAT con paquetes: write)
+### 2. Secrets de GitHub Actions
+Configurar en Settings → Secrets & variables → Actions:
 
-VPS_HOST (IP pública del VPS)
+- `CR_PAT`: Personal Access Token con permisos de packages:write
+- `VPS_HOST`: IP pública del VPS
+- `VPS_USER`: Usuario SSH (ej: ubuntu)
+- `VPS_SSH_KEY`: Clave privada SSH (sin passphrase)
+- `VPS_SSH_PORT`: Puerto SSH (opcional, default: 22)
 
-VPS_USER (usuario SSH, p. ej. ubuntu)
+### 3. Verificación
+- Comprobar GitHub Packages (GHCR) para ver `espinoza:1.0.5` después del push
+- Configurar DNS: crear registro A para `espinoza.byronrm.com` → IP del VPS
+- Verificar con: `curl http://espinoza.byronrm.com:1001/`
 
-VPS_SSH_KEY (clave privada SSH, sin passphrase o usar ssh-agent)
-
-VPS_SSH_PORT (opcional; 22)
-
-Comprobar GitHub Packages (GHCR) para ver espinoza:1.0.5 después del push.
-
-Configurar DNS: crear un registro A para espinoza.byronrm.com apuntando a la IP del VPS.
-
-Verificar con curl http://espinoza.byronrm.com/.
+### 4. Aplicación
+- Flask app con AI backend
+- Contenedor Docker
+- Tests automatizados
+- CI/CD pipeline completo

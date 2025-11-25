@@ -7,6 +7,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    return jsonify({"status": "healthy", "service": "espinoza-ai", "version": "1.0.5"})
+
 @app.route('/api/reply', methods=['POST'])
 def reply():
     data = request.json or {}
